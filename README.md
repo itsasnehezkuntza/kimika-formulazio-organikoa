@@ -1,46 +1,41 @@
-# KIMIKA · FORMULAZIO ORGANIKOA
+# KIMIKA · 2. BATXILERGOA / 2.º BACHILLERATO
 
-Web educativa de formulación y nomenclatura orgánica para 2.º de Bachillerato (PAU Euskadi), en euskera.
+Web educativa interactiva de Química para 2.º de Bachillerato (preparación PAU Euskadi y general), en euskera y castellano.
 
 ## Qué incluye
 
-- **Ikasi:** recorrido gamificado, progreso y acompañamiento de Kora.
-- **Kontsultatu:** Hasiera, Oinarriak, Konposatuen familiak, Izenetik formulara, Formulatik izenera y Laburpena.
-- **Praktikatu:** ejercicios por niveles, historial local, corrección y explicación.
-- **Kora:** cinco ilustraciones originales con estados de bienvenida, explicación, aviso, duda y celebración.
-- **Responsive:** pensado para ordenador, tablet y móvil.
-- Esta edición parte de la **versión KIMIKA 3.8**; los ejercicios didácticos no se presentan como enunciados PAU oficiales.
-
-## Publicar en GitHub Pages
-
-1. En GitHub, crea un **repositorio nuevo** llamado `kimika-formulazio-organikoa`. Para utilizar Pages con GitHub Free, el repositorio debe ser **público**.
-2. En el repositorio, entra en **Add file > Upload files**. Sube `index.html`, `styles.css`, `kontsultatu.css`, `app.js`, `kontsultatu.js`, `kimika-data.js`, `.nojekyll`, `README.md` y la carpeta `assets/`, conservando sus nombres y rutas. Comprueba que `index.html` está en la raíz del repositorio. Haz el commit en la rama `main`.
-3. En **Settings > Pages**, en **Build and deployment**, selecciona **Deploy from a branch**.
-4. Selecciona la rama **main** y la carpeta **/(root)**, y pulsa **Save**.
-5. Cuando termine la publicación, abre **Settings > Pages > Visit site**.
-
-La URL tendrá normalmente la forma:
-
-`https://TU_USUARIO.github.io/kimika-formulazio-organikoa/`
-
-El nombre del repositorio y de la cuenta determina la dirección exacta. No se considera publicado hasta que GitHub Pages indique que el sitio está activo.
+- **Propietate Periodikoak / Propiedades Periódicas:**
+  - Laboratorio interactivo con visualización atómica SVG en la misma escala (corteza de Bohr, núcleos con Z, distribución de electrones).
+  - 4 propiedades fundamentales: Radio atómico, 1.ª energía de ionización, Afinidad electrónica y Electronegatividad de Pauling.
+  - Simulaciones animadas de ionización ($+EI_1$), afinidad electrónica ($+AE$) y enlace covalente/polar con desplazamiento de nube y densidades de carga parcial ($\delta^+ / \delta^-$).
+  - Motor de justificación química rigurosa para PAU basado en capas ($n$), apantallamiento ($S$) y carga nuclear efectiva ($Z_{\text{ef}} = Z - S$).
+  - Detección y explicación detallada de excepciones clave de examen (Be vs B, N vs O, Cl vs F, Mg vs Al, P vs S, enlaces con $\Delta EN \ge 1,7$).
+  - Tabla periódica interactiva (periodos 1 a 4) con familias coloreadas para seleccionar y comparar cualquier pareja de elementos.
+  - Modo bilingüe instantáneo (EU / ES) integrado en la barra superior.
+- **Kimika Organikoa:**
+  - Biblioteca didáctica completa de formulación y nomenclatura orgánica para 2.º de Bachillerato.
+  - Secciones: Hasiera, Oinarriak (loturak, formulak, kateak, adarrak), Konposatuen atlasa, Lehentasunak, Izenetik formulara, Formulatik izenera y Laburpena.
+- **Praktikatu:**
+  - Ejercicios didácticos por niveles con corrección inmediata, pistas y explicaciones.
+- **Diseño Editorial «Cuaderno de Química»:**
+  - Estilo limpio sobre papel cálido milimetrado (`#FAF8F4`), tipografía de alta legibilidad (`Poppins`, `Plus Jakarta Sans`, `Newsreader`), accesible y con control de movimiento reducido.
 
 ## Estructura
 
 ```
 index.html           Punto de entrada de GitHub Pages
-styles.css           Estilos globales, Ikasi y Praktikatu (Poppins con Google Fonts)
-kontsultatu.css      Sistema editorial «Cuaderno Editorial de Química» para Kontsultatu y Txuletarioa
-app.js               Navegación global, recorrido Ikasi y ejercicios Praktikatu
-kontsultatu.js       Biblioteca didáctica Kontsultatu, diagramas químicos SVG y cajón de consulta rápida
-kimika-data.js       Datos químicos y explicaciones en euskera separados de la lógica (fácil edición)
-assets/
-  kora-welcome.png
-  kora-explain.png
-  kora-important.png
-  kora-think.png
-  kora-success.png
+styles.css           Estilos globales y sistema editorial de base
+kontsultatu.css      Sistema editorial «Cuaderno de Química» para Kontsultatu y Txuletarioa
+periodikoak.css      Estilos del laboratorio interactivo de propiedades periódicas
+app.js               Navegación global, enrutamiento por pestañas y selector bilingüe
+kontsultatu.js       Biblioteca didáctica de química orgánica, diagramas SVG y cajón
+periodikoak.js       Motor de datos, gráficos SVG y razonamiento químico (EU/ES)
+kimika-data.js       Datos químicos y moléculas de química orgánica
+assets/              Ilustraciones pedagógicas
 .nojekyll             Desactiva la compilación Jekyll de GitHub Pages
+publicar.sh           Script de sincronización y publicación para Linux / macOS
+zerbitzaria.sh        Script para lanzar el servidor local de desarrollo en Linux / macOS
+publicar.bat / .ps1   Scripts de sincronización y publicación para Windows
 README.md             Este archivo
 ```
 
@@ -48,13 +43,28 @@ README.md             Este archivo
 
 Esta web es **estática**: no necesita servidor propio, base de datos, API ni un framework. En desarrollo, usa un servidor local desde la carpeta del proyecto:
 
+**En Linux / macOS:**
+```bash
+./zerbitzaria.sh
+```
+
+**O directamente con Python:**
 ```sh
-python -m http.server 8000
+python3 -m http.server 8000
 ```
 
 Abre `http://localhost:8000/` en tu navegador.
 
-Los cambios subidos a `main` se publicarán automáticamente tras configurar GitHub Pages una vez.
+### Publicación y sincronización
+
+Para subir cambios al repositorio privado de desarrollo y publicarlos automáticamente en la web de los alumnos (GitHub Pages):
+
+- **En Linux / macOS:**
+  ```bash
+  ./publicar.sh "Mensaje del commit opcional"
+  ```
+- **En Windows:**
+  Doble clic en `publicar.bat` o desde PowerShell `./publicar.ps1 "Mensaje"`.
 
 ### Notas importantes
 

@@ -4,33 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#FAF8F4">
-<meta name="description" content="KIMIKA · Formulazio Organikoa: Teoria eta Ariketak.">
-<title>KIMIKA · Formulazio Organikoa</title>
+<meta name="description" content="KIMIKA · 2. Batxilergoa / 2.º Bachillerato: Propietate Periodikoak eta Kimika Organikoa.">
+<title>KIMIKA · 2. BATXILERGOA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./kontsultatu.css">
+<link rel="stylesheet" href="./periodikoak.css">
 <script type="module" src="./app.js"></script>
 </head>
 <body>
 <a href="#main" class="skip-link">Joan edukira</a>
 <header class="topbar">
- <a href="#teoria" class="logo" id="goHome" aria-label="KIMIKA hasiera">
+ <a href="#periodikoak" class="logo" id="goHome" aria-label="KIMIKA hasiera">
   <svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true"><circle cx="24" cy="24" r="6" fill="#ff7c63"/><ellipse cx="24" cy="24" rx="21" ry="9" fill="none" stroke="#312c8d" stroke-width="2.8" transform="rotate(34 24 24)"/><ellipse cx="24" cy="24" rx="21" ry="9" fill="none" stroke="#47bea1" stroke-width="2.8" transform="rotate(-38 24 24)"/><circle cx="43" cy="17" r="4" fill="#312c8d"/></svg>
-  <span>KIMIKA<small>FORMULAZIO ORGANIKOA</small></span>
+  <span id="brandTitle">KIMIKA<small id="brandSub">2. BATXILERGOA</small></span>
  </a>
  <nav class="nav-actions" aria-label="Nabigazio nagusia">
   <!-- Ikasi blokea gordeta eta ezkutatuta, etorkizunean berreskuratu ahal izateko -->
   <a href="#mapa" id="navLearn" hidden>Ikasi</a>
-  <a href="#teoria" id="navLibrary" class="nav-current">Teoria</a>
+  <a href="#periodikoak" id="navPeriodic" class="nav-current">Propietateak</a>
+  <a href="#teoria" id="navLibrary">Kimika Organikoa</a>
   <a href="#ariketak" id="navPractice">Ariketak</a>
  </nav>
- <button type="button" class="top-search" data-guide-jump aria-label="Bilatu familiak eta txuletarioa (Ctrl+K)"><span class="search-icon" aria-hidden="true">⌕</span><span>Bilatu<span class="search-label-long"> / Txuletarioa</span></span><kbd aria-hidden="true">Ctrl K</kbd></button>
+ <div class="top-controls">
+  <div class="lang-switch" role="group" aria-label="Hizkuntza / Idioma">
+   <button type="button" class="lang-btn active" data-lang="eu" aria-pressed="true" title="Euskara">EU</button>
+   <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Castellano">ES</button>
+  </div>
+  <button type="button" class="top-search" data-guide-jump aria-label="Bilatu familiak eta txuletarioa (Ctrl+K)"><span class="search-icon" aria-hidden="true">⌕</span><span id="searchBtnText">Bilatu<span class="search-label-long"> / Txuletarioa</span></span><kbd aria-hidden="true">Ctrl K</kbd></button>
+ </div>
  <div class="top-progress" hidden><span class="tiny-stars" aria-hidden="true">✦</span><span id="progressBadge">0 / 3</span><span class="progress-text">etapa</span></div>
 </header>
-<main id="main" tabindex="-1"><section id="mapPage" class="page" hidden aria-label="Ikasketa-ibilbidea"></section><section id="lessonPage" class="page" hidden aria-label="Ikasgai interaktiboa"></section><section id="consultPage" class="page integrated-page" aria-label="Kontsulta eta azalpen gidatuak"></section><section id="practicePage" class="page integrated-page" hidden aria-label="Mailakako ariketak"></section></main>
+<main id="main" tabindex="-1">
+ <section id="periodicPage" class="page integrated-page" aria-label="Propietate periodikoak"></section>
+ <section id="consultPage" class="page integrated-page" hidden aria-label="Kontsulta eta azalpen gidatuak"></section>
+ <section id="practicePage" class="page integrated-page" hidden aria-label="Mailakako ariketak"></section>
+ <section id="mapPage" class="page" hidden aria-label="Ikasketa-ibilbidea"></section>
+ <section id="lessonPage" class="page" hidden aria-label="Ikasgai interaktiboa"></section>
+</main>
 <div id="introRoot"></div><div id="catalogDrawerRoot"></div>
-<footer class="global-footer"><span>2. BATXILERGOA · PAU EUSKADI</span><span>Lehenengo ulertu. Gero praktikatu.</span></footer>
 </body>
 </html>

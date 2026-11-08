@@ -1,0 +1,1667 @@
+/* ==========================================================================
+   KIMIKA · PROPIETATE PERIODIKOAK / PROPIEDADES PERIÓDICAS
+   Diseño editorial limpio:
+   - Encabezado directo sin badges ni botones redundantes
+   - 4 columnas de selección de propiedades en una sola línea
+   - Tarjeta de definición y tendencia periódica inmediatamente debajo
+   - Escenario atómico con esferas de Bohr, enlace y banderola de coincidencias
+   - Razón teórica y veredicto escrito abajo para saber cuál es mayor
+   - Tabla periódica interactiva al pie
+   ========================================================================== */
+
+:root {
+  /* Element A (Azul editorial) */
+  --pk-a: #1B6CB0;
+  --pk-a-light: #52B1FF;
+  --pk-a-bg: #EAF2FB;
+  --pk-a-border: #B3D0F0;
+  --pk-a-ink: #1B518A;
+
+  /* Element B (Violeta editorial) */
+  --pk-b: #6E44B8;
+  --pk-b-light: #BA94FF;
+  --pk-b-bg: #F2ECFC;
+  --pk-b-border: #CBB7F0;
+  --pk-b-ink: #58309B;
+
+  --pk-teal: #176B74;
+  --pk-teal-bg: #E7F6EF;
+  --pk-teal-border: #A9DCC5;
+  --pk-gold: #C78210;
+  --pk-gold-bg: #FEF4D6;
+  --pk-gold-border: #ECCB72;
+  --pk-terra: #C24D2C;
+  --pk-terra-bg: #FFF0E6;
+  --pk-terra-border: #F2BE9C;
+
+  --pk-radius: 16px;
+}
+
+.pk-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 16px clamp(12px, 2.5vw, 32px) 60px;
+}
+
+/* --------------------------------------------------------------------------
+   1. Encabezado limpio (sin banner 2º bach ni pausar animaciones)
+   -------------------------------------------------------------------------- */
+.pk-clean-header {
+  margin: 8px 0 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ks-line, #E4DFD3);
+}
+
+.pk-header-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.pk-clean-header h1 {
+  font-size: clamp(26px, 3.2vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--ks-ink, #1C2237);
+  margin: 0;
+}
+
+.pk-clean-header h1 span {
+  color: var(--ks-accent, #45359C);
+}
+
+.pk-aurretikoak-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: var(--ks-surface, #FFFFFF);
+  border: 1.5px solid var(--ks-line, #E4DFD3);
+  border-radius: 999px;
+  color: var(--ks-ink, #1C2237);
+  font-size: 13.5px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(28, 34, 55, 0.05);
+  transition: all 0.15s ease;
+}
+
+.pk-aurretikoak-btn:hover {
+  background: #FAF9FF;
+  border-color: var(--ks-accent, #45359C);
+  color: var(--ks-accent, #45359C);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(69, 53, 156, 0.12);
+}
+
+.pk-aurretikoak-btn.active {
+  background: var(--ks-accent, #45359C);
+  border-color: var(--ks-accent, #45359C);
+  color: #FFFFFF;
+  box-shadow: 0 3px 10px rgba(69, 53, 156, 0.25);
+}
+
+.pk-aurr-btn-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.pk-clean-header p {
+  margin: 0;
+  font-size: clamp(14px, 1.15vw, 15.5px);
+  line-height: 1.6;
+  color: var(--ks-ink-soft, #434B63);
+  max-width: 980px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Tira de 4 columnas de selección de propiedades (en una sola línea)
+   -------------------------------------------------------------------------- */
+.pk-property-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pk-prop-col {
+  width: 100%;
+  text-align: left;
+  background: var(--ks-surface, #FFFFFF);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  border-radius: 14px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ks-ink, #1C2237);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(28, 34, 55, 0.04);
+  transition: all 0.15s ease;
+}
+
+.pk-prop-col:hover {
+  border-color: var(--ks-accent, #45359C);
+  background: #FAF9FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(69, 53, 156, 0.08);
+}
+
+.pk-prop-col.active {
+  background: #FFFFFF;
+  border-color: var(--ks-accent, #45359C);
+  box-shadow: inset 0 -3px 0 var(--ks-accent, #45359C), 0 4px 14px rgba(69, 53, 156, 0.12);
+}
+
+.pk-prop-col-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  font-weight: 800;
+  background: var(--ks-tint, #F5F2EA);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  color: var(--ks-accent, #45359C);
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.pk-prop-col.active .pk-prop-col-icon {
+  background: var(--ks-accent-soft, #EFEBFD);
+  border-color: var(--ks-accent, #45359C);
+}
+
+.pk-prop-col-info {
+  min-width: 0;
+}
+
+.pk-prop-col-info strong {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 750;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pk-prop-col-info small {
+  display: block;
+  font-size: 11px;
+  color: var(--ks-muted, #6C738A);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   3. Tarjeta de Definición y Tendencia Periódica
+   -------------------------------------------------------------------------- */
+.pk-def-card {
+  background: var(--ks-surface, #FFFFFF);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  border-radius: var(--pk-radius);
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(28, 34, 55, 0.04);
+}
+
+.pk-def-grid {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 24px;
+  align-items: center;
+}
+
+.pk-def-col-main {
+  min-width: 0;
+}
+
+.pk-def-col-trend {
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.pk-def-header {
+  margin-bottom: 10px;
+}
+
+.pk-def-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pk-teal);
+  margin-bottom: 3px;
+}
+
+.pk-def-title {
+  margin: 0;
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-weight: 800;
+  color: var(--ks-ink, #1C2237);
+  letter-spacing: -0.02em;
+}
+
+.pk-def-body {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ks-ink, #1C2237);
+  margin: 0 0 14px;
+}
+
+.pk-def-body p {
+  margin: 0 0 8px;
+}
+
+.pk-def-body p:last-child {
+  margin-bottom: 0;
+}
+
+.pk-def-body .pk-hl {
+  color: var(--ks-ink, #1C2237);
+  font-weight: 750;
+  text-decoration: underline;
+  text-decoration-color: var(--pk-teal, #0D9488);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  background: rgba(13, 148, 136, 0.08);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+/* Mini Tabla Periódica de Tendencia */
+.pk-mini-table-box {
+  width: 100%;
+  max-width: 230px;
+  background: var(--ks-surface, #FFFFFF);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  border-radius: 14px;
+  padding: 12px 14px 10px;
+  box-shadow: 0 2px 8px rgba(28, 34, 55, 0.04);
+}
+
+.pk-mini-table-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pk-mini-outline {
+  fill: #F8FAFC;
+  stroke: #94A3B8;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.pk-mini-outline.f-blk {
+  stroke-dasharray: 2.5 1.5;
+  stroke-width: 1.2;
+}
+
+.pk-mini-table-caption {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ks-primary, #0D9488);
+  font-weight: 700;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.pk-def-quick-pairs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ks-line, #E4DFD3);
+}
+
+.pk-pairs-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.pk-table-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ks-surface, #FFFFFF);
+  color: var(--ks-primary, #0D9488);
+  border: 1px solid var(--ks-line-strong, #CFC8B8);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(28, 34, 55, 0.05);
+  transition: all 0.15s ease;
+  line-height: 1.2;
+}
+
+.pk-table-dropdown-btn:hover {
+  background: var(--pk-teal-bg, #EEF9F8);
+  border-color: var(--pk-teal-border, #99F6E4);
+  color: var(--pk-teal, #0F766E);
+  transform: translateY(-1px);
+}
+
+.pk-table-dropdown-btn.open {
+  background: var(--ks-primary, #0D9488);
+  color: #FFFFFF;
+  border-color: var(--ks-primary, #0D9488);
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+}
+
+.pk-btn-grid-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.pk-caret {
+  font-size: 8.5px;
+  opacity: 0.85;
+}
+
+.pk-table-dropdown-panel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ks-line, #E4DFD3);
+  animation: pkFadeSlideDown 0.25s ease-out;
+}
+
+@keyframes pkFadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pk-dropdown-table-inner {
+  background: var(--ks-tint-soft, #FAF8F4);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.pk-quick-label {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ks-muted, #6C738A);
+}
+
+.pk-pairs-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pk-pair-chip {
+  background: var(--ks-surface, #FFFFFF);
+  border: 1px solid var(--ks-line-strong, #CFC8B8);
+  border-radius: 8px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 750;
+  color: var(--ks-ink-soft, #434B63);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pk-pair-chip:hover {
+  background: #FAF9FF;
+  border-color: var(--ks-accent, #45359C);
+  color: var(--ks-accent, #45359C);
+}
+
+.pk-pair-chip.active {
+  background: var(--ks-accent-soft, #EFEBFD);
+  border-color: var(--ks-accent, #45359C);
+  color: var(--ks-accent, #45359C);
+}
+
+/* --------------------------------------------------------------------------
+   4. Representación de la Propiedad (Estudio Atómico)
+   -------------------------------------------------------------------------- */
+.pk-studio {
+  background: var(--ks-surface, #FFFFFF);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  border-radius: var(--pk-radius);
+  box-shadow: 0 1px 3px rgba(28, 34, 55, 0.04);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+/* Selectores A y B */
+.pk-selectors {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 46px minmax(0, 1fr);
+  gap: 12px;
+  padding: 18px 24px 10px;
+  align-items: end;
+}
+
+.pk-field label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.pk-field.a label { color: var(--pk-a); }
+.pk-field.b label { color: var(--pk-b); }
+
+.pk-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.pk-field.a .pk-dot { background: var(--pk-a); }
+.pk-field.b .pk-dot { background: var(--pk-b); }
+
+.pk-select {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 11px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  background: var(--ks-tint-soft, #F9F7F2);
+  border: 1px solid var(--ks-line-strong, #CFC8B8);
+  color: var(--ks-ink, #1C2237);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pk-select:focus {
+  border-color: var(--ks-accent, #45359C);
+  box-shadow: 0 0 0 3px rgba(69, 53, 156, 0.12);
+}
+
+.pk-swap-btn {
+  height: 44px;
+  background: var(--ks-tint, #F5F2EA);
+  border: 1px solid var(--ks-line-strong, #CFC8B8);
+  border-radius: 11px;
+  color: var(--ks-ink, #1C2237);
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+
+.pk-swap-btn:hover {
+  background: #FFFFFF;
+  border-color: var(--ks-accent, #45359C);
+  color: var(--ks-accent, #45359C);
+  transform: rotate(180deg);
+}
+
+/* Escenario Atómico (Fondo claro de papel con milimetrado y halos suaves) */
+.pk-stage-frame {
+  margin: 10px 20px 0;
+  min-height: 355px;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--ks-line, #E4DFD3);
+  background: #FAF8F4;
+  background-image: 
+    radial-gradient(ellipse 55% 85% at 26% 50%, rgba(27, 108, 176, 0.08), transparent 75%),
+    radial-gradient(ellipse 55% 85% at 74% 50%, rgba(110, 68, 184, 0.08), transparent 75%),
+    linear-gradient(to right, rgba(28, 34, 55, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(28, 34, 55, 0.035) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 3px rgba(28, 34, 55, 0.04), inset 0 1px 3px rgba(28, 34, 55, 0.02);
+}
+
+.pk-stage-play-btn {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ks-surface, #FFFFFF);
+  color: var(--ks-primary, #0D9488);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  box-shadow: 0 2px 8px rgba(28, 34, 55, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  padding-left: 2px;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.pk-stage-play-btn:hover {
+  transform: scale(1.08);
+  background: var(--pk-teal-bg, #EEF9F8);
+  border-color: var(--pk-teal-border, #99F6E4);
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.2);
+}
+
+.pk-stage-play-btn:active {
+  transform: scale(0.95);
+}
+
+/* 1. Atom Stage */
+.pk-atom-stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 355px;
+  display: grid;
+  grid-template-columns: 1fr 90px 1fr;
+  align-items: center;
+  padding: 16px 18px 20px;
+}
+
+.pk-atom-side {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pk-atom-side-head {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ks-ink, #1C2237);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pk-elem-tag {
+  font-size: 11px;
+  font-weight: 850;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.pk-atom-side.left .pk-elem-tag {
+  background: var(--pk-a-bg);
+  color: var(--pk-a-ink);
+  border: 1px solid var(--pk-a-border);
+}
+.pk-atom-side.right .pk-elem-tag {
+  background: var(--pk-b-bg);
+  color: var(--pk-b-ink);
+  border: 1px solid var(--pk-b-border);
+}
+
+.pk-atom-wrap {
+  height: 245px;
+  width: min(100%, 305px);
+  display: grid;
+  place-items: center;
+  position: relative;
+  margin: 9px 0 0;
+}
+
+/* Esferas atómicas */
+.pk-atom-model {
+  position: relative;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  filter: drop-shadow(0 4px 18px rgba(28, 34, 55, 0.06));
+  transition: width 0.65s cubic-bezier(0.2, 0.75, 0.16, 1),
+              height 0.65s cubic-bezier(0.2, 0.75, 0.16, 1),
+              filter 0.25s;
+}
+
+.pk-atom-side.left .pk-atom-model::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(27, 108, 176, 0.08) 0%, rgba(27, 108, 176, 0.02) 70%, transparent 100%);
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.pk-atom-side.right .pk-atom-model::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(110, 68, 184, 0.08) 0%, rgba(110, 68, 184, 0.02) 70%, transparent 100%);
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* Capas concéntricas continuas */
+.pk-shell {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(27, 108, 176, 0.35);
+  inset: var(--inset);
+  transition: inset 0.5s ease;
+  pointer-events: none;
+}
+.pk-atom-side.right .pk-shell {
+  border-color: rgba(110, 68, 184, 0.35);
+}
+
+.pk-shell.shared-layer {
+  border-color: #267B5C !important;
+  border-width: 2px !important;
+  box-shadow: 0 0 10px rgba(38, 123, 92, 0.35);
+}
+
+/* Electrones */
+.pk-electron {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  left: var(--ex);
+  top: var(--ey);
+  transform: translate(-50%, -50%);
+  background: var(--pk-a);
+  border-radius: 50%;
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(27, 108, 176, 0.4), 0 0 6px rgba(82, 177, 255, 0.5);
+}
+.pk-atom-side.right .pk-electron {
+  background: var(--pk-b);
+  border-color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(110, 68, 184, 0.4), 0 0 6px rgba(186, 148, 255, 0.5);
+}
+
+.pk-electron.shared-val-dot {
+  background: #C78210 !important;
+  border-color: #FFFFFF !important;
+  box-shadow: 0 0 6px #F2D288, 0 0 12px #C78210 !important;
+}
+
+/* Núcleo esférico 3D */
+.pk-nucleus {
+  width: 44px;
+  height: 44px;
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%, #4FA6F5, #1B6CB0 55%, #104A7B);
+  box-shadow: inset -3px -3px 7px rgba(16, 74, 123, 0.5), 0 3px 12px rgba(27, 108, 176, 0.28);
+  font-size: 15px;
+  font-weight: 900;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+}
+
+.pk-atom-side.right .pk-nucleus {
+  background: radial-gradient(circle at 30% 28%, #A87EF5, #6E44B8 55%, #472682);
+  box-shadow: inset -3px -3px 7px rgba(71, 38, 130, 0.5), 0 3px 12px rgba(110, 68, 184, 0.28);
+  color: #FFFFFF;
+}
+
+/* Calibre de radio */
+.pk-radius-line {
+  position: absolute;
+  bottom: 24px;
+  width: var(--rad, 100px);
+  height: 2px;
+  background: #455269;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.pk-radius-line::before,
+.pk-radius-line::after {
+  position: absolute;
+  content: "";
+  top: -4px;
+  width: 2px;
+  height: 10px;
+  background: #1C2237;
+}
+.pk-radius-line::before { left: 0; }
+.pk-radius-line::after { right: 0; }
+
+.pk-stage-frame:not(.mode-radius) .pk-radius-line {
+  display: none;
+}
+
+/* Electrones en movimiento */
+.pk-traveller {
+  position: absolute;
+  z-index: 9;
+  color: #FFFFFF;
+  font-weight: 900;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #FFFFFF, #C78210 65%, #8C5D00);
+  border: 1.5px solid #FFFFFF;
+  display: none;
+  place-items: center;
+  box-shadow: 0 2px 10px rgba(199, 130, 16, 0.4);
+  font-size: 16px;
+  right: 25%;
+  top: 42%;
+}
+
+.pk-stage-frame.mode-ion .pk-traveller.ion,
+.pk-stage-frame.mode-aff .pk-traveller.aff {
+  display: grid;
+}
+
+.pk-traveller.aff {
+  opacity: 0;
+  right: 5%;
+  top: 38%;
+  background: radial-gradient(circle at 30% 25%, #FFFFFF, #267B5C 65%, #15553E);
+  box-shadow: 0 2px 10px rgba(38, 123, 92, 0.4);
+}
+
+.pk-stage-frame.running .pk-traveller.ion {
+  animation: pkElectronEject 1.8s ease-out both;
+}
+
+.pk-stage-frame.running .pk-traveller.aff {
+  animation: pkElectronEnter 1.85s ease-in-out both;
+}
+
+.pk-stage-frame.running .pk-atom-model {
+  animation: pkAtomFlash 1.85s ease-out;
+}
+
+@keyframes pkElectronEject {
+  0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  12% { opacity: 1; }
+  45% { transform: translate(18px, -6px) scale(1.15); }
+  80%, 100% { transform: translate(110px, -95px) scale(1.15); opacity: 0; }
+}
+
+@keyframes pkElectronEnter {
+  0% { transform: translate(110px, -65px) scale(0.6); opacity: 0; }
+  15% { opacity: 1; }
+  60% { transform: translate(-10px, 12px) scale(1); }
+  88%, 100% { transform: translate(-42px, 30px) scale(0.6); opacity: 0; }
+}
+
+@keyframes pkAtomFlash {
+  0%, 100% { filter: drop-shadow(0 4px 18px rgba(28, 34, 55, 0.06)); }
+  45% { filter: drop-shadow(0 4px 28px rgba(69, 53, 156, 0.25)); }
+}
+
+.pk-between {
+  font-size: 12px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ks-muted, #6C738A);
+  display: grid;
+  gap: 8px;
+  place-items: center;
+}
+
+.pk-between-line {
+  height: 48px;
+  width: 1px;
+  background: linear-gradient(transparent, var(--ks-line-strong, #CFC8B8), transparent);
+}
+
+.pk-visual-foot {
+  font-size: 11.5px;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--ks-ink-soft, #434B63);
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pk-visual-foot strong {
+  color: var(--ks-ink, #1C2237);
+  font-weight: 750;
+}
+
+/* 2. Bond Stage (Electronegatividad) */
+.pk-bond-stage {
+  position: relative;
+  z-index: 1;
+  display: none;
+  width: 100%;
+  min-height: 380px;
+  padding: 44px 28px 28px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.pk-stage-frame.mode-en .pk-atom-stage { display: none; }
+.pk-stage-frame.mode-en .pk-bond-stage { display: flex; }
+
+.pk-bond-main {
+  width: min(100%, 700px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 172px;
+  margin-top: 14px;
+}
+
+.pk-bond-ball {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: #FFFFFF;
+  background: radial-gradient(circle at 30% 26%, #5EB4F8, #1B6CB0 52%, #114B7D);
+  box-shadow: 0 6px 20px rgba(27, 108, 176, 0.28), inset -6px -6px 12px rgba(17, 75, 125, 0.6);
+  position: relative;
+  z-index: 3;
+  flex: none;
+  border: 2px solid #FFFFFF;
+}
+
+.pk-bond-ball.b {
+  background: radial-gradient(circle at 30% 26%, #BA8CFF, #6E44B8 52%, #45247B);
+  box-shadow: 0 6px 20px rgba(110, 68, 184, 0.28), inset -6px -6px 12px rgba(69, 36, 123, 0.6);
+}
+
+.pk-charge {
+  font-size: 16px;
+  font-weight: 900;
+  position: absolute;
+  top: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: -0.02em;
+  padding: 4px 11px;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(28, 34, 55, 0.08);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.pk-bond-ball.a .pk-charge {
+  color: var(--pk-a-ink);
+  background: var(--pk-a-bg);
+  border: 1.5px solid var(--pk-a-border);
+}
+.pk-bond-ball.b .pk-charge {
+  color: var(--pk-b-ink);
+  background: var(--pk-b-bg);
+  border: 1.5px solid var(--pk-b-border);
+}
+
+.pk-bond-cloud-track {
+  height: 76px;
+  max-width: 380px;
+  min-width: 80px;
+  flex: 1;
+  position: relative;
+}
+
+.pk-bond-link {
+  position: absolute;
+  inset: calc(50% - 4px) -8px auto;
+  height: 8px;
+  border-radius: 40px;
+  background: #E4DFD3;
+  border: 1px solid #CFC8B8;
+}
+
+.pk-bond-cloud {
+  width: 72%;
+  height: 96px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% + var(--offset, 0px)), -50%);
+  border-radius: 100%;
+  background: radial-gradient(ellipse, rgba(209, 145, 16, 0.25) 0%, rgba(254, 244, 214, 0.6) 45%, transparent 75%);
+  border: 1px dashed rgba(209, 145, 16, 0.4);
+  filter: blur(4px);
+  transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.pk-bond-electron {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  transform: translate(calc(-50% + var(--offset, 0px)), -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #FFFFFF, #D19110 65%, #8C5D00);
+  display: grid;
+  place-items: center;
+  color: #FFFFFF;
+  font-weight: 900;
+  box-shadow: 0 2px 10px rgba(209, 145, 16, 0.4);
+  border: 1.5px solid #FFFFFF;
+  transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pk-bond-electron::after {
+  content: "e⁻";
+  font-size: 11px;
+}
+
+.pk-bond-labels {
+  display: flex;
+  justify-content: space-between;
+  width: min(100%, 650px);
+  gap: 12px;
+  margin-top: 26px;
+  color: var(--ks-ink, #1C2237);
+  font-weight: 700;
+  font-size: 13.5px;
+}
+.pk-bond-labels span:last-child { text-align: right; }
+
+.pk-bond-disclaimer {
+  color: var(--ks-muted, #6C738A);
+  font-size: 12px;
+  text-align: center;
+  max-width: 620px;
+  line-height: 1.6;
+  margin: 14px 0 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Comparación Numérica y Barras Alineadas (Fondo Blanco)
+   -------------------------------------------------------------------------- */
+.pk-showdown {
+  margin: 18px 24px 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+}
+
+.pk-number-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 900;
+  margin: 0 0 16px;
+}
+.pk-number-line .a-val { color: var(--pk-a); }
+.pk-number-line .b-val { color: var(--pk-b); }
+.pk-number-line .cmp-sign { color: var(--ks-muted, #6C738A); font-size: 24px; }
+
+.pk-measure-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 90px;
+  gap: 14px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.pk-row-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pk-row-label.a { color: var(--pk-a); }
+.pk-row-label.b { color: var(--pk-b); }
+
+.pk-track {
+  height: 20px;
+  background: var(--ks-tint, #F0ECE1);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.pk-bar {
+  height: 100%;
+  width: var(--w, 0%);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pk-bar.a { background: linear-gradient(90deg, #1B6CB0, #4092D6); }
+.pk-bar.b { background: linear-gradient(90deg, #6E44B8, #946DE0); }
+.pk-bar.winner { box-shadow: 0 0 0 2px #FFFFFF inset; }
+
+.pk-score {
+  text-align: right;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ks-ink, #1C2237);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tarjeta del Veredicto y Razón Escrita Abajo */
+.pk-verdict {
+  margin: 0 20px 16px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--pk-teal-bg);
+  border: 1px solid var(--pk-teal-border);
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.pk-verdict-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--pk-teal-border);
+  color: var(--pk-teal);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.pk-verdict h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--pk-teal);
+  line-height: 1.35;
+}
+
+.pk-verdict p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ks-ink, #1C2237);
+}
+
+/* Excepciones PAU */
+.pk-exception {
+  display: none;
+  margin: 0 20px 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--pk-terra-bg);
+  border: 1px solid var(--pk-terra-border);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--pk-terra);
+}
+
+.pk-exception.visible {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.pk-exception-badge {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #FFFFFF;
+  border: 1px solid var(--pk-terra-border);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  flex-shrink: 0;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   5. Tabla Periódica (Desplegable)
+   -------------------------------------------------------------------------- */
+.pk-periodic-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.pk-periodic-head h3 {
+  margin: 0 0 4px;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--ks-ink, #1C2237);
+}
+
+.pk-periodic-head p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ks-muted, #6C738A);
+}
+
+.pk-target-toggle {
+  display: flex;
+  padding: 3px;
+  background: var(--ks-tint, #F5F2EA);
+  border: 1px solid var(--ks-line-strong, #CFC8B8);
+  border-radius: 10px;
+}
+
+.pk-target-toggle button {
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ks-ink-soft, #434B63);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pk-target-toggle button.selected.target-a {
+  background: var(--pk-a);
+  color: #FFFFFF;
+}
+
+.pk-target-toggle button.selected.target-b {
+  background: var(--pk-b);
+  color: #FFFFFF;
+}
+
+.pk-table-scroll {
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-top: 10px;
+}
+
+.pk-table-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(38px, 1fr));
+  grid-template-rows: repeat(4, 52px);
+  gap: 4px;
+  min-width: 760px;
+}
+
+.pk-cell {
+  position: relative;
+  border: 1px solid var(--ks-line, #E4DFD3);
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: var(--ks-ink, #1C2237);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pk-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(28, 34, 55, 0.08);
+  z-index: 2;
+}
+
+.pk-cell .pk-cell-z {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--ks-muted, #6C738A);
+}
+
+.pk-cell .pk-cell-sym {
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.pk-cell.alkali { background: #FDECEC; border-color: #F8BEBE; }
+.pk-cell.alkaline { background: #FEF4E8; border-color: #FBD7B3; }
+.pk-cell.metalloid { background: #E9F6F3; border-color: #BBE3DA; }
+.pk-cell.nonmetal { background: #EBF7EE; border-color: #BFE8C7; }
+.pk-cell.halogen { background: #EDF3FB; border-color: #BCD3F3; }
+.pk-cell.noble { background: #F2ECFB; border-color: #D3BEF3; }
+.pk-cell.postmetal { background: #F2F4F7; border-color: #CCD2DD; }
+
+.pk-cell.activeA {
+  outline: 3px solid var(--pk-a);
+  outline-offset: -1px;
+  z-index: 4;
+  box-shadow: 0 0 12px rgba(27, 108, 176, 0.4);
+}
+
+.pk-cell.activeB {
+  outline: 3px solid var(--pk-b);
+  outline-offset: -1px;
+  z-index: 4;
+  box-shadow: 0 0 12px rgba(110, 68, 184, 0.4);
+}
+
+.pk-cell.activeA.activeB {
+  outline: 3px dashed var(--ks-ink, #1C2237);
+}
+
+.pk-periodic-legend {
+  display: flex;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--ks-ink-soft, #434B63);
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ks-line, #E4DFD3);
+}
+
+.pk-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pk-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(28, 34, 55, 0.15);
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   Aurretiko Kontzeptuak (Teoria eta Oinarriak - PDF)
+   -------------------------------------------------------------------------- */
+.pk-theory-clean-view {
+  margin-bottom: 28px;
+  animation: pkFadeSlideDown 0.25s ease-out;
+}
+
+.pk-theory-card-block {
+  background: var(--ks-surface, #FFFFFF);
+  border: 1px solid var(--ks-line, #E4DFD3);
+  border-radius: var(--pk-radius);
+  padding: 24px 28px;
+  margin-bottom: 22px;
+  box-shadow: 0 1px 3px rgba(28, 34, 55, 0.04);
+}
+
+.pk-theory-block-title {
+  margin: 0 0 18px;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  color: var(--ks-ink, #1C2237);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pk-theory-block-title span {
+  color: var(--pk-teal, #0D9488);
+  font-weight: 900;
+}
+
+.pk-theory-sub-block {
+  margin-bottom: 20px;
+}
+
+.pk-theory-sub-block:last-child {
+  margin-bottom: 0;
+}
+
+.pk-theory-sub-title {
+  margin: 0 0 8px;
+  font-size: 14.5px;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--pk-teal, #0D9488);
+}
+
+.pk-theory-block-desc {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ks-ink, #1C2237);
+}
+
+.pk-theory-block-desc strong {
+  font-weight: 800;
+  color: var(--ks-ink, #1C2237);
+  text-decoration: underline;
+  text-decoration-color: var(--pk-teal, #0D9488);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  background: rgba(13, 148, 136, 0.08);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.pk-theory-example-label {
+  font-size: 13.5px;
+  font-weight: 750;
+  color: var(--ks-ink, #1C2237);
+  margin-bottom: 14px;
+}
+
+.pk-theory-example-label span {
+  font-weight: 500;
+  color: var(--ks-ink-soft, #434B63);
+  margin-left: 4px;
+}
+
+.pk-theory-illustration-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: center;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 20px 24px;
+}
+
+.pk-theory-atoms-col {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.pk-bohr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.pk-bohr-svg-wrap {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.pk-bohr-svg-wrap:hover {
+  transform: scale(1.02);
+}
+
+.pk-bohr-svg-wrap svg {
+  display: block;
+}
+
+.pk-bohr-meta {
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--ks-ink, #1C2237);
+}
+
+.pk-bohr-meta strong {
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.pk-bohr-z {
+  font-size: 11px;
+  color: var(--ks-muted, #6C738A);
+  font-weight: 600;
+}
+
+.pk-bohr-config {
+  display: block;
+  font-size: 11px;
+  color: var(--pk-teal, #0D9488);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.pk-theory-grid-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.pk-pdf-table-grid-wrap {
+  width: 100%;
+  max-width: 440px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+}
+
+.pk-pdf-table-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pk-theory-divider {
+  border: 0;
+  height: 1px;
+  background: var(--ks-line, #E4DFD3);
+  margin: 22px 0;
+}
+
+.pk-new-concepts-duo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.pk-new-concept-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 20px 22px;
+  border-left: 4px solid var(--pk-teal, #0D9488);
+  display: flex;
+  flex-direction: column;
+}
+
+.pk-new-concept-card h4 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 850;
+  color: var(--ks-ink, #1C2237);
+  text-decoration: underline;
+  text-decoration-color: var(--pk-teal, #0D9488);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.pk-new-concept-card p {
+  margin: 0 0 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ks-ink-soft, #434B63);
+}
+
+.pk-concept-visual-wrap {
+  margin-top: auto;
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.pk-concept-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pk-formula-badge {
+  display: inline-block;
+  font-weight: 850;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #0F766E;
+  background: #CCFBF1;
+  border: 1px solid #99F6E4;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 4px;
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .pk-property-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pk-theory-illustration-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .pk-new-concepts-duo {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .pk-def-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .pk-def-col-trend {
+    justify-content: flex-start;
+  }
+  .pk-mini-table-box {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .pk-property-strip {
+    grid-template-columns: 1fr;
+  }
+  .pk-theory-card-block {
+    padding: 18px 16px;
+  }
+  .pk-theory-illustration-row {
+    padding: 14px 12px;
+  }
+  .pk-theory-atoms-col {
+    gap: 14px;
+  }
+  .pk-selectors {
+    grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1fr);
+    padding: 12px 14px 6px;
+    gap: 6px;
+  }
+  .pk-stage-frame {
+    margin: 10px 10px 0;
+    min-height: 310px;
+  }
+  .pk-atom-stage {
+    min-height: 310px;
+    padding: 12px 6px 16px;
+    grid-template-columns: 1fr 40px 1fr;
+  }
+  .pk-atom-wrap { height: 210px; }
+  .pk-bond-stage {
+    min-height: 310px;
+    padding: 34px 12px 20px;
+  }
+  .pk-bond-ball {
+    width: 68px;
+    height: 68px;
+    font-size: 22px;
+  }
+  .pk-charge {
+    font-size: 13px;
+    top: -34px;
+    padding: 3px 8px;
+  }
+  .pk-bond-cloud-track {
+    min-width: 45px;
+  }
+  .pk-bond-labels {
+    margin-top: 18px;
+    font-size: 12px;
+  }
+  .pk-showdown, .pk-verdict, .pk-exception {
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+  .pk-measure-row {
+    grid-template-columns: 85px 1fr 70px;
+    gap: 8px;
+  }
+  .pk-verdict {
+    grid-template-columns: 30px 1fr;
+    gap: 9px;
+    padding: 14px;
+  }
+  .pk-verdict-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+}
+
+body.no-motion *,
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,5 +1,6 @@
 import { MOLECULES } from './kimika-data.js';
 import { mountConsult, openQuickConsultDrawer, closeQuickConsultDrawer, chemHTML, proseChemHTML } from './kontsultatu.js';
+import { mountPeriodicProperties } from './periodikoak.js';
 
 // Eduki didaktikoak, aplikazioaren logikatik bereizita. Adibide guztiak didaktikoak dira (EZ PAU OFIZIALAK).
 const units = [
@@ -1387,20 +1388,108 @@ function decorationFor(slide){if(slide.type==='intro'){if(slide.visual==='atom')
  if(slide.type==='choice')return `<div><div class="big-chem">${activeId==='loturak'?chemHTML('CH2=CH2'):activeId==='kateak'?'met- · et- · prop- · but-':slide.id==='galdera1'?proseChemHTML('CH₃CH₂OH · CO₂ · NaCl'):'C ≠ beti organikoa'}</div><div class="diagram-sub">Pentsatu; ondoren, aukeratu erantzuna.</div></div>`;
  return ''}
 function stageIcon(unit){return unit.symbol==='atom'?'C':unit.symbol==='chain'?'C–C':'✧'}
-function selectNav(mode='learn'){
- for(const [sel,name] of [['#navLearn','learn'],['#navLibrary','consult'],['#navPractice','practice']]){
+
+let currentLang = 'eu';
+try {
+  const saved = localStorage.getItem('kimika_lang');
+  if (saved === 'es' || saved === 'eu') currentLang = saved;
+} catch(e){}
+
+let periodicInstance = null;
+
+function setLang(newLang){
+  if (newLang !== 'eu' && newLang !== 'es') newLang = 'eu';
+  currentLang = newLang;
+  try { localStorage.setItem('kimika_lang', newLang); } catch(e){}
+  document.documentElement.lang = currentLang;
+  updateGlobalI18n();
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h === 'periodikoak' || h === 'propiedades' || !h) {
+    renderPeriodic();
+  } else if (h === 'kontsultatu' || h === 'teoria') {
+    renderConsult();
+  } else if (h === 'praktikatu' || h === 'ariketak') {
+    renderPractice();
+  }
+}
+
+function updateGlobalI18n(){
+  const isEs = currentLang === 'es';
+  const brandTitle = $('#brandTitle');
+  if(brandTitle){
+    brandTitle.innerHTML = isEs
+      ? 'QUÍMICA<small id="brandSub">2.º BACHILLERATO</small>'
+      : 'KIMIKA<small id="brandSub">2. BATXILERGOA</small>';
+  }
+  const navPer = $('#navPeriodic');
+  if(navPer) navPer.textContent = isEs ? 'Propiedades' : 'Propietateak';
+  const navLib = $('#navLibrary');
+  if(navLib) navLib.textContent = isEs ? 'Química Orgánica' : 'Kimika Organikoa';
+  const navPrac = $('#navPractice');
+  if(navPrac) navPrac.textContent = isEs ? 'Ejercicios' : 'Ariketak';
+  const searchBtnText = $('#searchBtnText');
+  if(searchBtnText){
+    searchBtnText.innerHTML = isEs
+      ? 'Buscar<span class="search-label-long"> / Chuletario</span>'
+      : 'Bilatu<span class="search-label-long"> / Txuletarioa</span>';
+  }
+  const footL = $('#footerLeft');
+  if(footL) footL.textContent = isEs ? '2.º BACHILLERATO · PAU EUSKADI' : '2. BATXILERGOA · PAU EUSKADI';
+  const footR = $('#footerRight');
+  if(footR) footR.textContent = isEs ? 'Primero comprender. Luego practicar.' : 'Lehenengo ulertu. Gero praktikatu.';
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    const active = btn.dataset.lang === currentLang;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', String(active));
+  });
+}
+
+function selectNav(mode='periodic'){
+ for(const [sel,name] of [['#navPeriodic','periodic'],['#navLibrary','consult'],['#navPractice','practice'],['#navLearn','learn']]){
    const link=$(sel);if(!link)continue;
    const active=mode===name;link.classList.toggle('nav-current',active);
    if(active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
  }
 }
+function renderPeriodic(){
+ activeId=null;
+ if($('#mapPage')) $('#mapPage').hidden=true;
+ if($('#lessonPage')) $('#lessonPage').hidden=true;
+ if($('#consultPage')) $('#consultPage').hidden=true;
+ if($('#practicePage')) $('#practicePage').hidden=true;
+ const p=$('#periodicPage');
+ if(p) p.hidden=false;
+ selectNav('periodic');
+ updateGlobalI18n();
+ periodicInstance = mountPeriodicProperties(p, currentLang, setLang);
+ document.title = (currentLang === 'es' ? 'Propiedades periódicas' : 'Propietate periodikoak') + ' · ' + (currentLang === 'es' ? 'QUÍMICA 2.º BACH' : 'KIMIKA 2. BATX');
+}
 function renderConsult(){
- activeId=null;$('#mapPage').hidden=true;$('#lessonPage').hidden=true;$('#practicePage').hidden=true;$('#consultPage').hidden=false;
- selectNav('consult');mountConsult($('#consultPage'));document.title='Teoria · KIMIKA';
+ activeId=null;
+ if($('#mapPage')) $('#mapPage').hidden=true;
+ if($('#lessonPage')) $('#lessonPage').hidden=true;
+ if($('#practicePage')) $('#practicePage').hidden=true;
+ if($('#periodicPage')) $('#periodicPage').hidden=true;
+ const c=$('#consultPage');
+ if(c) c.hidden=false;
+ selectNav('consult');
+ updateGlobalI18n();
+ mountConsult(c);
+ document.title = (currentLang === 'es' ? 'Química Orgánica' : 'Kimika Organikoa') + ' · ' + (currentLang === 'es' ? 'QUÍMICA 2.º BACH' : 'KIMIKA 2. BATX');
 }
 function renderPractice(){
- activeId=null;$('#mapPage').hidden=true;$('#lessonPage').hidden=true;$('#consultPage').hidden=true;$('#practicePage').hidden=false;
- selectNav('practice');mountPractice($('#practicePage'));document.title='Ariketak · KIMIKA';
+ activeId=null;
+ if($('#mapPage')) $('#mapPage').hidden=true;
+ if($('#lessonPage')) $('#lessonPage').hidden=true;
+ if($('#consultPage')) $('#consultPage').hidden=true;
+ if($('#periodicPage')) $('#periodicPage').hidden=true;
+ const pr=$('#practicePage');
+ if(pr) pr.hidden=false;
+ selectNav('practice');
+ updateGlobalI18n();
+ mountPractice(pr);
+ document.title = (currentLang === 'es' ? 'Ejercicios' : 'Ariketak') + ' · ' + (currentLang === 'es' ? 'QUÍMICA 2.º BACH' : 'KIMIKA 2. BATX');
 }
 function openCatalogDrawer(){
  const root=$('#catalogDrawerRoot');if(!root)return;
@@ -1413,7 +1502,7 @@ function closeCatalogDrawer(){
 function jumpToCatalog(){
  openCatalogDrawer();
 }
-function renderMap(){activeId=null;$('#lessonPage').hidden=true;$('#consultPage').hidden=true;$('#practicePage').hidden=true;$('#mapPage').hidden=false;selectNav('learn');
+function renderMap(){activeId=null;if($('#periodicPage'))$('#periodicPage').hidden=true;$('#lessonPage').hidden=true;$('#consultPage').hidden=true;$('#practicePage').hidden=true;$('#mapPage').hidden=false;selectNav('learn');
  const total=units.filter(u=>completed(u.id)).length, next=units.findIndex((u,i)=>unlocked(i)&&!completed(u.id));let resume=next<0?units[0]:units[next];
  $('#progressBadge').textContent=`${total} / ${units.length}`;
  const percent=Math.round(total/units.length*100);
@@ -1436,7 +1525,7 @@ function renderMap(){activeId=null;$('#lessonPage').hidden=true;$('#consultPage'
  `;
 
  document.title='KIMIKA · Ibilbidea';maybeOpenIntro();}
-function openUnit(id){$('#consultPage').hidden=true;$('#practicePage').hidden=true;selectNav('learn');const index=units.findIndex(u=>u.id===id);if(index<0||!unlocked(index)){location.hash='#mapa';return;}activeId=id;step=completed(id)?0:Math.max(0,Math.min(state.positions[id]||0,units[index].slides.length-1));bondCount=0;selections={};feedback={};explored={};$('#mapPage').hidden=true;$('#lessonPage').hidden=false;enterSlide(units[index].slides[step]);renderLesson();}
+function openUnit(id){if($('#periodicPage'))$('#periodicPage').hidden=true;$('#consultPage').hidden=true;$('#practicePage').hidden=true;selectNav('learn');const index=units.findIndex(u=>u.id===id);if(index<0||!unlocked(index)){location.hash='#mapa';return;}activeId=id;step=completed(id)?0:Math.max(0,Math.min(state.positions[id]||0,units[index].slides.length-1));bondCount=0;selections={};feedback={};explored={};$('#mapPage').hidden=true;$('#lessonPage').hidden=false;enterSlide(units[index].slides[step]);renderLesson();}
 function canContinue(slide){if(slide.type==='choice'||slide.type==='hydrogen'||slide.type==='bond')return passed(slide);if(slide.type==='everyday'||slide.type==='contrast'||slide.type==='atom'||slide.type==='roots'||teachingTypes.has(slide.type))return viewed(slide);return true}
 function activityFor(slide){let html='';const isQuestion=slide.type==='choice'||slide.type==='hydrogen';
  if(isQuestion){html+=`<div class="lesson-instruction">AUKERATU ERANTZUNA</div><div class="lesson-activity">${slide.options.map((option,i)=>`<button type="button" class="option ${selections[slide.id]===i?'selected':''} ${passed(slide)&&i===slide.correct?'correct':''}" ${passed(slide)?'disabled':''} data-answer="${i}" aria-pressed="${selections[slide.id]===i}"><span class="letter">${'ABC'[i]}</span><span>${proseChemHTML(option)}</span></button>`).join('')}</div>`;
@@ -1475,15 +1564,16 @@ function changeStep(n){const unit=units.find(u=>u.id===activeId);step=Math.max(0
 function next(){const unit=units.find(u=>u.id===activeId),slide=unit.slides[step];if(!canContinue(slide))return;if(step===unit.slides.length-1){if(!completed(unit.id))state.completed.push(unit.id);delete state.positions[unit.id];save();location.hash='#mapa';renderMap();window.scrollTo({top:0,behavior:'instant'});return;}changeStep(step+1)}
 function route(){
  const h=decodeURIComponent(location.hash.slice(1));
- if(h==='kontsultatu'||h==='teoria'){renderConsult();return}
- if(h==='praktikatu'||h==='ariketak'){renderPractice();return}
+ if(h==='periodikoak'||h==='propiedades'||h==='propietateak'){renderPeriodic();return}
+ if(h==='kontsultatu'||h==='teoria'||h==='organikoa'||h==='organica'){renderConsult();return}
+ if(h==='praktikatu'||h==='ariketak'||h==='ejercicios'){renderPractice();return}
  if(h.startsWith('ikasgaia/')){
    const id=h.split('/')[1];if(activeId===id&&!$('#lessonPage').hidden)return;openUnit(id);return;
  }
  if(h==='mapa'||h==='ikasi'){
    renderMap();return;
  }
- renderConsult();
+ renderPeriodic();
 }
 window.addEventListener('hashchange',()=>{route();window.scrollTo({top:0,behavior:'instant'})});
 document.addEventListener('keydown',e=>{
@@ -1498,6 +1588,7 @@ document.addEventListener('keydown',e=>{
 });
 document.addEventListener('click',e=>{
  const t=e.target.closest('button');if(!t)return;
+ if(t.classList.contains('lang-btn')&&t.dataset.lang){setLang(t.dataset.lang);return}
  if(t.hasAttribute('data-guide-jump')){jumpToCatalog();return}
  if(t.hasAttribute('data-catalog-close')){closeCatalogDrawer();return}
  if(t.hasAttribute('data-intro-open')){openIntro();return}
